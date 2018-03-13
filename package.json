@@ -2,12 +2,7 @@
   "name": "lrud",
   "version": "2.2.1",
   "description": "Left, Right, Up, Down. A spatial navigation library for devices with input via directional controls",
-  "main": "src/index.js",
-  "unpkg": "umd/lrud.min.js",
-  "files": [
-    "umd",
-    "src"
-  ],
+  "main": "dist/index.js",
   "author": {
     "name": "Stuart Williams",
     "url": "https://github.com/stuart-williams"
@@ -29,27 +24,29 @@
     "url": "git@github.com:stuart-williams/lrud.git"
   },
   "devDependencies": {
+    "@types/jest": "^22.2.0",
+    "@types/node": "^9.4.7",
     "jest": "^22.1.4",
-    "rimraf": "^2.6.2",
-    "rollup": "^0.53.0",
-    "rollup-plugin-commonjs": "^8.2.6",
-    "rollup-plugin-node-resolve": "^3.0.2",
-    "standard": "^10.0.3",
-    "uglify-js": "^3.2.2"
-  },
-  "dependencies": {
-    "tiny-emitter": "^2.0.2"
+    "ts-jest": "^22.4.1",
+    "tslint": "^5.9.1",
+    "typescript": "^2.7.2"
   },
   "scripts": {
-    "preversion": "npm test",
-    "postversion": "git push && git push --tags",
-    "clean": "rimraf umd",
-    "lint": "standard src/*.js",
-    "pretest": "npm run lint && npm run build",
-    "test": "jest",
-    "minify": "uglifyjs umd/lrud.js --compress --mangle --output umd/lrud.min.js",
-    "prebuild": "npm run clean",
-    "build": "rollup -c",
-    "postbuild": "npm run minify"
+    "test": "jest --no-cache",
+    "start": "tsc -w",
+    "build": "tsc"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "transform": {
+      "^.+\\.(ts|tsx)$": "./node_modules/ts-jest/preprocessor.js"
+    },
+    "testMatch": [
+      "**/test/*.+(ts|tsx|js)"
+    ]
   }
 }
