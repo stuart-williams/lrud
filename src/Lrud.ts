@@ -1,4 +1,4 @@
-import { EventEmitter } from "events";
+import Events from "./Events";
 
 interface INodes {
   [id: string]: INode;
@@ -15,7 +15,7 @@ interface INode {
   activeChild?: string;
 }
 
-class Lrud extends EventEmitter {
+class Lrud extends Events {
   public nodes: INodes = {};
   public root: string;
   public currentFocus: string;
