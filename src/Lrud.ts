@@ -52,7 +52,7 @@ class Lrud extends Events {
     delete this.nodes[id];
   }
 
-  public blur(id: string) {
+  public blur(id: string): void {
     const node = this.nodes[id];
 
     if (!node) {
@@ -69,6 +69,49 @@ class Lrud extends Events {
 
     if (this.currentFocus === id) {
       this.currentFocus = undefined;
+    }
+  }
+
+  public focus(id?: string): void {
+    const node = this.nodes[id] || this.nodes[this.root];
+
+    if (!node) {
+      return;
+    }
+
+    const child = this.getActiveChild(node);
+
+    if (child) {
+      this.focus(child.id);
+    }
+
+    this.currentFocus = id;
+
+    const event = { ...node };
+
+    if (node.onFocus) {
+      node.onFocus(event);
+    }
+
+    this.emit("focus", event);
+
+    // TODO: Bubble active
+  }
+
+  public getFocusedNode(): INode {
+    const node = this.nodes[this.currentFocus];
+
+    if (node) {
+      return { ...node };
+    }
+  }
+
+  public getActiveChild(node: INode): INode {
+    const id = node.activeChild || node.children[0];
+    const child = this.nodes[id];
+
+    if (child) {
+      return { ...child };
     }
   }
 

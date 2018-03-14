@@ -45,7 +45,7 @@ test("should blur if focused", () => {
   n.blur = jest.fn();
 
   n.register("foo");
-  n.currentFocus = "foo";
+  n.focus("foo");
   n.unregister("foo");
 
   expect(n.blur).toHaveBeenCalled();

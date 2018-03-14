@@ -25,13 +25,13 @@ test("should call the `onBlur` callback", () => {
   }));
 });
 
-test("should unset `currentFocus` if focused", () => {
+test("should unset the current focus if blurring the current focused node", () => {
   const n = new Lrud();
   const onBlur = jest.fn();
 
   n.register("foo", { onBlur });
-  n.currentFocus = "foo";
+  n.focus("foo");
   n.blur("foo");
 
-  expect(n.currentFocus).not.toBeDefined();
+  expect(n.getFocusedNode()).not.toBeDefined();
 });
