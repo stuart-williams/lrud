@@ -1,22 +1,18 @@
 import Events from "./Events";
 
-interface INodes {
-  [id: string]: INode;
-}
-
-interface INode {
+export interface INode {
   id?: string;
   parent?: string;
   children?: string[];
-  onFocus?: () => void;
-  onBlur?: () => void;
-  onSelect?: () => void;
-  onMove?: () => void;
+  onFocus?: (event: INode) => void;
+  onBlur?: (event: INode) => void;
+  onSelect?: (event: INode) => void;
+  onMove?: (event: INode) => void;
   activeChild?: string;
 }
 
 class Lrud extends Events {
-  public nodes: INodes = {};
+  public nodes: { [id: string]: INode; } = {};
   public root: string;
   public currentFocus: string;
 
@@ -49,8 +45,7 @@ class Lrud extends Events {
     }
 
     if (this.currentFocus === id) {
-      // TODO: Blur?
-      this.currentFocus = undefined;
+      this.blur(id);
     }
 
     node.children.forEach(this.unregister.bind(this));
@@ -58,13 +53,23 @@ class Lrud extends Events {
   }
 
   public blur(id: string) {
-    const node = this.nodes[id] || this.nodes[this.currentFocus];
+    const node = this.nodes[id];
 
     if (!node) {
       return;
     }
 
-    this.emit("blur", node);
+    const event = { ...node };
+
+    if (node.onBlur) {
+      node.onBlur(event);
+    }
+
+    this.emit("blur", event);
+
+    if (this.currentFocus === id) {
+      this.currentFocus = undefined;
+    }
   }
 
   private addChild(node: INode, id: string): void {

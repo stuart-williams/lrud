@@ -39,12 +39,14 @@ test("should unregister all of a node's children", () => {
   expect(n.nodes).toEqual({});
 });
 
-test("should unset the `currentFocus` prop", () => {
+test("should blur if focused", () => {
   const n = new Lrud();
+
+  n.blur = jest.fn();
 
   n.register("foo");
   n.currentFocus = "foo";
   n.unregister("foo");
 
-  expect(n.currentFocus).not.toBeDefined();
+  expect(n.blur).toHaveBeenCalled();
 });

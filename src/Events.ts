@@ -15,9 +15,7 @@ class Events {
 
   public emit(eventName: string, ...args: any[]): boolean {
     const listeners = this.events[eventName] || [];
-
     listeners.forEach((listener) => listener(...args));
-
     return !!listeners.length;
   }
 }
